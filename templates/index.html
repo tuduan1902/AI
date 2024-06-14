@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API Call</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div id="faceIcon" class="icon-container">
+            <img src="{{ url_for('static', filename='normal-face.png') }}" alt="Face" id="faceImg">
+        </div>
+        <div class="tooltip">
+            <button id="voiceBtn" class="icon-button">
+                <img src="{{ url_for('static', filename='microphone-icon.png') }}" alt="Microphone">
+            </button>
+            <span class="tooltiptext">Call Voice API</span>
+        </div>
+        <div class="tooltip">
+            <button id="symptomsBtn" class="icon-button">
+                <img src="{{ url_for('static', filename='click-icon.png') }}" alt="Click">
+            </button>
+            <span class="tooltiptext">Call Symptoms API</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const symptomsButton = document.getElementById('symptomsBtn');
+    
+            // Khi button được click, gọi API và chuyển hướng
+            symptomsButton.addEventListener('click', function() {
+                fetch('/api/symptoms', {method: 'POST'})
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response from server:', data);
+                    // Chuyển hướng ngay lập tức sau khi nhận được phản hồi
+                    window.location.href = '/show-diagnosis';
+                })
+                .catch(error => console.error('Error calling the API:', error));
+            });
+        });
+    </script>
+    
+</body>
+</html>
